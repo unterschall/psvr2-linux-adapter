@@ -53,6 +53,13 @@ psvr2-linux-adapter/
 └── integration/        # Framework integration (OpenHMD, SteamVR, etc.)
 ```
 
+## Documentation
+
+- [Project Documentation](docs/index.md) - Main documentation index
+- [Hardware Requirements](docs/hardware_requirements.md) - Detailed system requirements
+- [Debugging Guide](docs/debugging/README.md) - Comprehensive debugging documentation
+- [Troubleshooting](docs/debugging/troubleshooting_guide.md) - Solutions for common issues
+
 ## Building and Installation
 
 ### Quick Start
@@ -154,6 +161,7 @@ Since this project is still in development, there is no stable usage pattern yet
 1. **Testing Tools**:
    - USB protocol analyzer in `tools/capture-usb.sh`
    - Device detection in `tools/find-device.sh`
+   - Comprehensive debugging helper in `tools/debug-helper.sh`
 
 2. **Kernel Module**:
    After installation, the module can be loaded manually:
