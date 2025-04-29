@@ -1,0 +1,53 @@
+# Build directories
+build/
+_build/
+cmake-build-*/
+
+# IDE directories
+.idea/
+.vscode/
+.vs/
+*.swp
+*~
+
+# Compiled files
+*.o
+*.ko
+*.obj
+*.elf
+*.mod
+*.mod.c
+*.cmd
+.tmp_versions/
+*.symvers
+modules.order
+
+# Packages
+*.deb
+*.rpm
+*.tar.gz
+*.tar.xz
+*.zip
+
+# CMake intermediate files
+CMakeCache.txt
+CMakeFiles/
+CMakeLists.txt.user
+
+# Logs
+*.log
+*.out
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# Other
+.DS_Store
+.directory
+.Trash-*

@@ -1,0 +1,42 @@
+# Kernel module Makefile template
+# This will be configured by CMake to create the actual Makefile
+
+# If KERNELRELEASE is defined, we've been invoked from the
+# kernel build system and can use its language.
+ifneq ($(KERNELRELEASE),)
+    # Define module name and source files
+    obj-m := psvr2_adapter.o
+    psvr2_adapter-objs := psvr2_adapter_main.o psvr2_display.o psvr2_input.o psvr2_hid.o
+    
+    # Set additional compiler flags
+    ccflags-y := -Wall -Wextra -I$(src)/include
+    
+    # Enable debug mode if requested
+    ifdef DEBUG
+        ccflags-y += -DDEBUG
+    endif
+
+# Otherwise we were called directly from the command line.
+# Invoke the kernel build system.
+else
+    # Kernel source directory set by CMake
+    KERNEL_SOURCE := @KERNEL_HEADERS_PATH@
+    PWD := $(shell pwd)
+
+all: modules
+
+modules:
+	$(MAKE) -C $(KERNEL_SOURCE) M=$(PWD) modules
+
+modules_install:
+	$(MAKE) -C $(KERNEL_SOURCE) M=$(PWD) modules_install
+
+clean:
+	$(MAKE) -C $(KERNEL_SOURCE) M=$(PWD) clean
+
+check-style:
+	$(KERNEL_SOURCE)/scripts/checkpatch.pl --no-tree -f *.c
+
+endif
+
+.PHONY: all clean modules modules_install check-style

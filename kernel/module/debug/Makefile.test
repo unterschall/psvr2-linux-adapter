@@ -1,0 +1,10 @@
+# Makefile for simple test module
+obj-m += simple_test.o
+
+KERNELDIR ?= /lib/modules/$(shell uname -r)/build
+
+all:
+	$(MAKE) -C $(KERNELDIR) M=$(shell pwd) modules
+
+clean:
+	$(MAKE) -C $(KERNELDIR) M=$(shell pwd) clean
