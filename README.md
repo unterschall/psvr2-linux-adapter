@@ -59,7 +59,7 @@ The project uses a modern CMake-based build system with distribution detection a
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/psvr2-linux-adapter.git
+git clone https://github.com/unterschall/psvr2-linux-adapter.git
 cd psvr2-linux-adapter
 
 # Make the configuration script executable
