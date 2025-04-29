@@ -24,6 +24,8 @@ This project is in the early stages of development and is not yet functional. Th
 - USB 3.0 port
 - Bluetooth 4.0 or newer for controller support
 
+For detailed hardware requirements including Sony's official PC specifications, see [Hardware Requirements Documentation](docs/hardware_requirements.md).
+
 ### Software Requirements
 
 - Linux kernel 5.10 or newer
