@@ -5,7 +5,7 @@
 # verify the position/quaternion axis convention. Holds the 4K display (so the
 # headset is in VR mode and the tracker runs) and logs /dev/psvr2-pose.
 #
-# MUST run from a text console (Ctrl+Alt+F3) as root, like drive-display.sh.
+# MUST run from a text console (Ctrl+Alt+F3) as root.
 #
 #   sudo scripts/pose-capture.sh [log_seconds]
 set -u

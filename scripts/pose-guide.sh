@@ -5,7 +5,7 @@
 # logs each pose sample tagged with the on-screen instruction (no timing
 # guesswork). Builds psvr2-pose-guide if needed and runs it.
 #
-# MUST run as root from a text console (Ctrl+Alt+F3), like drive-display.sh.
+# MUST run as root from a text console (Ctrl+Alt+F3).
 # Output: /tmp/pose-guide-log.txt
 set -u
 
