@@ -1,0 +1,41 @@
+# Kernel module build artifacts
+*.o
+*.o.*
+*.ko
+*.mod
+*.mod.c
+*.mod.o
+*.cmd
+*.symvers
+*.order
+.tmp_versions/
+.*.d
+modules.order
+Module.symvers
+
+# Userspace tool binaries
+userspace/tools/psvr2-imu-test
+userspace/tools/psvr2-pose-test
+userspace/tools/psvr2-gaze-test
+userspace/tools/psvr2-kms-modeset
+userspace/tools/psvr2-pose-log
+userspace/tools/psvr2-pose-guide
+
+# libpsvr2 build artifacts
+userspace/lib/*.a
+userspace/lib/*.so
+userspace/lib/psvr2-monitor
+
+# SteamVR driver build output
+steamvr/driver_psvr2/build/
+
+# Upstream reference repos (each has its own git history; kept locally only)
+references/
+
+# Editors / OS / tools
+*.swp
+*~
+.idea/
+.vscode/
+.claude/
+.junie/

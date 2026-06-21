@@ -1,0 +1,23 @@
+{
+	"driver_psvr2": {
+		"enable": true,
+		"model_number": "PSVR2",
+		"serial_number": "PSVR2-0001",
+
+		"display_frequency": 90.0,
+
+		"//direct": "true (default): report the panel as a real, non-desktop display",
+		"//direct2": "so SteamVR's compositor acquires it directly via DRM leasing (no",
+		"//direct3": "TTY; desktop keeps running). false: extended-desktop scaffold,",
+		"//direct4": "which needs the window_* placement below. See docs/steamvr.md.",
+		"direct_mode": true,
+
+		"//": "Extended-mode (direct_mode=false) panel placement. window_* describe",
+		"//x": "where the 4000x2040 panel sits in the X/desktop layout; set window_x",
+		"//xx": "to the panel's left edge (e.g. primary-monitor width). Ignored in direct mode.",
+		"window_x": 0,
+		"window_y": 0,
+		"window_width": 4000,
+		"window_height": 2040
+	}
+}

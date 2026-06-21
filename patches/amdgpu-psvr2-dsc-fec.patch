@@ -1,0 +1,42 @@
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+index 9655e6fa53a4..ddb3ae4f5fe8 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+@@ -1199,6 +1199,37 @@ static bool detect_link_and_local_sink(struct dc_link *link,
+ 			link->reported_link_cap.link_rate = get_max_edp_link_rate(link);
+ 		}
+ 
++		/* PS VR2 quirk to enable DSC */
++		if ((sink->edid_caps.manufacturer_id == 0xD94D && (sink->edid_caps.product_id == 0xA205 || sink->edid_caps.product_id == 0xC207 )) ||
++		    (sink->edid_caps.manufacturer_id == 0x8B36 && sink->edid_caps.product_id == 0x3612)) { /* Generic MTK EDID */
++			LINK_INFO("Sony PS VR2 detected. Quirking DSC\n");
++			link->dpcd_caps.dsc_caps.dsc_basic_caps.raw[0] = 0x1;
++			// { 0x61, 0x11 },    /* DSC Version 1.1 */
++			link->dpcd_caps.dsc_caps.dsc_basic_caps.raw[1] = 0x11;
++			// { 0x62, 0x00 },    /* RC Buffer Block Size */
++			link->dpcd_caps.dsc_caps.dsc_basic_caps.raw[2] = 0x0;
++			// { 0x64, 0x08 },    /* DSC SLICE CAPABILITIES 1 */
++			link->dpcd_caps.dsc_caps.dsc_basic_caps.raw[4] = 0x8;
++			// { 0x6a, 0x01 },    /* DSC DECODER COLOR FORMAT CAPABILITIES */
++			link->dpcd_caps.dsc_caps.dsc_basic_caps.raw[9] = 0x1;
++			// { 0x6B, 0x01 },    /* Peak DSC Throughput */
++			link->dpcd_caps.dsc_caps.dsc_basic_caps.raw[0xB] = 0x1;
++			// { 0x6C, 0x08 },    /* DSC Maximum Slice Width */
++			link->dpcd_caps.dsc_caps.dsc_basic_caps.raw[0xC] = 0x8;
++
++			/* Additionally, set color depth flags */
++			link->dpcd_caps.dsc_caps.dsc_basic_caps.raw[0xA] = 0x6;
++
++			/* Other */
++			link->dpcd_caps.dsc_caps.dsc_basic_caps.raw[5]   = 0x02; // 65h - DSC LINE BUFFER BIT DEPTH = 11 bits
++			link->dpcd_caps.dsc_caps.dsc_basic_caps.raw[6]   = 0x01; // 66h - DSC BLOCK PREDICTION SUPPORT = Block prediction is supported
++			link->dpcd_caps.dsc_caps.dsc_basic_caps.raw[0xA] = 0x06; // 6Ah - DSC DECODER COLOR DEPTH CAPABILITIES = 8/10 bits per color supported
++			link->dpcd_caps.dsc_caps.dsc_basic_caps.raw[0xD] = 0x00; // 6Dh - DSC SLICE CAPABILITIES 2 = 16/20/24 slices not supported
++			link->dpcd_caps.dsc_caps.dsc_basic_caps.raw[0xF] = 0x04; // 6Fh - BITS_PER_PIXEL_INCREMENT = 1bpp (0x03 = 1/2bpp also supported)
++			link->dpcd_caps.fec_cap.raw = 0xBF; // FEC_CAPABLE | UNCORRECTED_BLOCK_ERROR_COUNT_CAPABLE | CORRECTED_BLOCK_ERROR_COUNT_CAPABLE | BIT_ERROR_COUNT_CAPABLE + reserved bits 7-4 set to 1011
++			link->dpcd_caps.fec_cap.bits.FEC_CAPABLE = 1;
++		}
++
+ 	} else {
+ 		/* From Connected-to-Disconnected. */
+ 		link->type = dc_connection_none;

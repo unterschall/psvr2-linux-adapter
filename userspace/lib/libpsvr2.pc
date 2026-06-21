@@ -1,0 +1,10 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libpsvr2
+Description: Userspace access to the PSVR2 kernel module (IMU, pose, gaze, camera, brightness)
+Version: 0.1
+Libs: -L${libdir} -lpsvr2
+Cflags: -I${includedir}

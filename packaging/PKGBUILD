@@ -1,0 +1,38 @@
+# Maintainer: PSVR2 Linux project
+#
+# DKMS package for the psvr2 kernel module. Build from the repo root:
+#   cd packaging && makepkg -si
+#
+# The `dkms` pacman hooks build/install the module on install and rebuild it on
+# kernel upgrades. Sources are taken from the ../kernel directory in this repo.
+_pkgbase=psvr2
+pkgname=psvr2-dkms
+pkgver=0.1
+pkgrel=1
+pkgdesc="Sony PlayStation VR2 headset driver (IMU/IIO, 6DoF pose, V4L2 cameras, eye tracking)"
+arch=('any')
+url="https://wiki.vronlinux.org/docs/hardware/psvr2/"
+license=('GPL2')
+depends=('dkms')
+optdepends=('v4l-utils: camera testing (v4l2-ctl)'
+           'libiio: high-rate buffered IMU capture (iio_readdev)'
+           'xorg-xrandr: bring the headset panel up under X11')
+provides=("${_pkgbase}")
+conflicts=("${_pkgbase}")
+
+package() {
+	local src="${startdir}/.."
+	local dest="${pkgdir}/usr/src/${_pkgbase}-${pkgver}"
+
+	# Module sources + dkms.conf for DKMS to build against.
+	install -dm755 "${dest}"
+	cp -a "${src}/kernel/." "${dest}/"
+
+	# udev rules for device-node access.
+	install -Dm644 "${src}/kernel/99-psvr2.rules" \
+		"${pkgdir}/usr/lib/udev/rules.d/99-psvr2.rules"
+
+	# Documentation.
+	install -Dm644 "${src}/README.md" \
+		"${pkgdir}/usr/share/doc/${_pkgbase}/README.md"
+}

@@ -1,0 +1,13 @@
+# PlayStation VR2 (USB 054c:0cde) — grant the active session access to the
+# IIO (IMU) and input (buttons/proximity/IPD) nodes created by the psvr2 module.
+SUBSYSTEM=="iio", KERNELS=="*", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0cde", TAG+="uaccess"
+SUBSYSTEM=="input", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0cde", TAG+="uaccess"
+# pose / gaze char devices (miscdevices). These have no USB ancestry in sysfs and
+# are not assigned to a seat, so logind never applies a "uaccess" ACL to them —
+# uaccess silently does nothing here. Grant access via group instead: "input" is
+# present on all systemd systems and is the conventional local-device group.
+# (Add yourself once with: sudo usermod -aG input "$USER"  then re-login.)
+SUBSYSTEM=="misc", KERNEL=="psvr2-pose", MODE="0660", GROUP="input"
+SUBSYSTEM=="misc", KERNEL=="psvr2-gaze", MODE="0660", GROUP="input"
+# V4L2 camera node
+SUBSYSTEM=="video4linux", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0cde", TAG+="uaccess"
