@@ -82,8 +82,10 @@ thread reads 6DoF samples, remaps them into the OpenVR frame, and submits them v
   headset GPU, launch Steam with
   `VK_DRIVER_FILES=/usr/share/vulkan/icd.d/radeon_icd.json` (or set it in the
   SteamVR launch options).
-- **Session type.** Direct-mode display acquisition currently works under **X11**;
-  **Wayland** leasing is not yet working and is tracked on the roadmap.
+- **Session type.** Direct-mode display acquisition has been validated under
+  **X11**. **Wayland** is not yet verified: DRM leasing on Wayland (via
+  `wp_drm_lease_device_v1`, supported by KWin and Mutter) is the intended path,
+  but it has not been tested together with the multi-GPU workaround above.
 - **FOV / distortion.** These are placeholders, so the image is geometrically
   approximate and has no lens correction yet.
 - **Spatial calibration.** Floor height and forward direction come from SteamVR's

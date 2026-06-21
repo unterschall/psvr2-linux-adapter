@@ -57,7 +57,8 @@ Contributions in any of these areas are welcome.
 - **Lens distortion mesh** and accurate **per-eye FOV** (currently placeholders).
 - **Driver-side recenter / default standing height** so a usable pose comes up
   without running SteamVR Room Setup.
-- **Wayland** direct-mode display acquisition.
+- **Confirm Wayland** direct-mode display acquisition (DRM leasing via
+  `wp_drm_lease_device_v1`; not yet validated, see steamvr.md).
 - **Eye-tracking** exposure and **controller** support.
 
 ### Other runtimes
