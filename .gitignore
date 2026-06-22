@@ -20,6 +20,11 @@ userspace/tools/psvr2-gaze-test
 userspace/tools/psvr2-kms-modeset
 userspace/tools/psvr2-pose-log
 userspace/tools/psvr2-pose-guide
+userspace/tools/vk-acquire-drm-display
+
+# wayland-scanner generated protocol bindings
+userspace/tools/drm-lease-v1-client-protocol.h
+userspace/tools/drm-lease-v1-protocol.c
 
 # libpsvr2 build artifacts
 userspace/lib/*.a
