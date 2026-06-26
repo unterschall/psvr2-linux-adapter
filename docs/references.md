@@ -29,8 +29,11 @@ repository).
 
 - **OpenVR SDK** — Valve (<https://github.com/ValveSoftware/openvr>,
   `SPDX: BSD-3-Clause`). The SteamVR driver is built against its
-  `openvr_driver.h` and modelled on the SDK's sample HMD driver; it uses the
-  sample `driverlog` logging helper.
+  `openvr_driver.h` and modelled on the SDK's sample HMD driver. The needed
+  files (`openvr_driver.h` and the sample `driverlog` helper, SDK v2.15.6) are
+  **vendored** under `steamvr/driver_psvr2/third_party/openvr/` with the OpenVR
+  `LICENSE` retained, so the driver builds from a clean checkout. See that
+  directory's README.
 
 - **VR on Linux wiki** — <https://wiki.vronlinux.org/docs/hardware/psvr2/>.
 

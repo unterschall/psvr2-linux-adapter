@@ -6,27 +6,24 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
-# Locate the in-tree references and the userspace library. Overridable so the
-# driver can also build against an installed OpenVR / libpsvr2.
+# OpenVR (openvr_driver.h + the sample driverlog helper) is vendored under
+# third_party/openvr so the driver builds from a clean checkout — see that dir's
+# README and LICENSE. libpsvr2 comes from the userspace tree.
 set(REPO_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../..")
-set(OPENVR_DIR "${REPO_ROOT}/references/openvr" CACHE PATH "OpenVR SDK root")
-set(OPENVR_SAMPLE_UTILS "${OPENVR_DIR}/samples/drivers/utils")
+set(OPENVR_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/openvr")
 set(LIBPSVR2_DIR "${REPO_ROOT}/userspace/lib" CACHE PATH "libpsvr2 source dir")
 
-# driverlog is a tiny logging wrapper shipped with the OpenVR samples.
 add_library(driver_psvr2 MODULE
     src/hmd_driver_factory.cpp
     src/device_provider.cpp
     src/hmd_device_driver.cpp
     src/pose_source.cpp
-    "${OPENVR_SAMPLE_UTILS}/driverlog/driverlog.cpp"
+    "${OPENVR_DIR}/driverlog.cpp"
 )
 
 target_include_directories(driver_psvr2 PRIVATE
     src
-    "${OPENVR_DIR}/headers"
-    "${OPENVR_SAMPLE_UTILS}/driverlog"
-    "${OPENVR_SAMPLE_UTILS}/vrmath"
+    "${OPENVR_DIR}"
     "${LIBPSVR2_DIR}"
 )
 

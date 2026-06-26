@@ -20,7 +20,7 @@ struct Psvr2DisplayConfig
 	int32_t window_height = 2040;
 	int32_t render_width = 2000;   // per-eye render target
 	int32_t render_height = 2040;
-	float   fov_tan = 1.30f;       // tan(half-FOV); ~104deg total — refine from references/PSVR2
+	float   fov_tan = 1.30f;       // tan(half-FOV); ~104deg total — refine from the PSVR2 RE notes
 
 	// Direct mode (default): report the panel as a real, NON-desktop display so
 	// SteamVR's compositor acquires it directly via DRM leasing (no TTY, desktop

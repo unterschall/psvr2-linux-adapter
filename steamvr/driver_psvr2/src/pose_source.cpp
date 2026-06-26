@@ -12,8 +12,8 @@
 //
 // OpenVR is right-handed: +x right, +y up, -z forward, metres. OpenXR uses the
 // same convention, so we mirror the Monado PSVR2 driver's process_slam_record
-// remap verbatim (references/monado-psvr2 psvr2.c) — adopted as the reference
-// after the in-headset pose-guide superseded the earlier hand-timed capture.
+// remap verbatim (see docs/references.md) — adopted as the reference after the
+// in-headset pose-guide superseded the earlier hand-timed capture.
 //
 // The tracker's native upright is additionally rolled 90deg from OpenVR's, so
 // after the basis change we left-multiply a fixed +90deg rotation about Z (the

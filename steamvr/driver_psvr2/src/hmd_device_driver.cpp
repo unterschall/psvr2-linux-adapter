@@ -8,10 +8,10 @@
 
 static const char *kSettingsSection = "driver_psvr2";
 
-// PSVR2 panel EDID identity, decoded from the Sony SIE EDID
-// (references/psvr2-sie-kernel-modules .../mtk_wrapper_edid.h): manufacturer
-// bytes 0x4D 0xD9 = "SNY", product id 0xA205, monitor name "SIE  VRH". SteamVR
-// uses these to match and DRM-lease the physical connector in direct mode.
+// PSVR2 panel EDID identity, decoded from the Sony SIE OSS panel EDID (see
+// docs/references.md): manufacturer bytes 0x4D 0xD9 = "SNY", product id 0xA205,
+// monitor name "SIE  VRH". SteamVR uses these to match and DRM-lease the
+// physical connector in direct mode.
 static constexpr int32_t kEdidVendorId = 0x4DD9;   // "SNY"
 static constexpr int32_t kEdidProductId = 0xA205;
 
@@ -176,7 +176,7 @@ void Psvr2DisplayComponent::GetEyeOutputViewport( vr::EVREye eEye, uint32_t *pnX
 void Psvr2DisplayComponent::GetProjectionRaw( vr::EVREye eEye, float *pfLeft, float *pfRight, float *pfTop, float *pfBottom )
 {
 	// Symmetric FOV placeholder. TODO: per-eye asymmetric values from the
-	// headset FOV params in references/PSVR2.
+	// headset FOV params in the PSVR2 reverse-engineering notes (docs/references.md).
 	*pfLeft = -config_.fov_tan;
 	*pfRight = config_.fov_tan;
 	*pfTop = -config_.fov_tan;
