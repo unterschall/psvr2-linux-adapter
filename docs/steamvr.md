@@ -34,6 +34,37 @@ pick up changes — no reinstall needed.
 The driver is built against the OpenVR SDK's `openvr_driver.h` and links
 `libpsvr2` statically, so the resulting `.so` is self-contained.
 
+## Running on Wayland
+
+Direct mode works on a Wayland session (validated on KDE Plasma 6 / KWin) — no
+TTY or X11 required — with two settings:
+
+1. **Force the headset's GPU.** On a multi-GPU machine, point SteamVR's Vulkan at
+   the GPU the headset is wired to, or the compositor can't acquire the display.
+   For an AMD/RADV headset GPU, launch Steam with:
+
+   ```sh
+   VK_DRIVER_FILES=/usr/share/vulkan/icd.d/radeon_icd.json steam
+   ```
+
+   (or set it in the SteamVR launch options as `VK_DRIVER_FILES=... %command%`).
+
+2. **Set `displayPortTrainingMode` to `1`.** With SteamVR fully shut down
+   (`steam -shutdown`, so the edit isn't overwritten), add to the `"steamvr"`
+   section of `~/.local/share/Steam/config/steamvr.vrsettings`:
+
+   ```json
+   "displayPortTrainingMode" : 1,
+   ```
+
+   The default (`0`) produces an invalid atomic modeset on the leased connector
+   on Linux — the kernel logs `dc_stream_state is NULL for crtc` and the
+   compositor drops the surface. Mode `1` takes a DP link-training path that
+   modesets the 4000×2040 panel correctly.
+
+With both, the panel lights in direct mode with correct color and 6DoF tracking
+while the desktop keeps running on your other monitors.
+
 ## How direct mode works
 
 For a standard DisplayPort-connected HMD, the driver does **not** do the leasing
@@ -78,14 +109,12 @@ thread reads 6DoF samples, remaps them into the OpenVR frame, and submits them v
 
 - **Multi-GPU systems.** If the headset is wired to a different GPU than the one
   SteamVR renders on, the compositor can fail to acquire the display. Point
-  SteamVR's Vulkan at the GPU that drives the headset — e.g. for an AMD/RADV
-  headset GPU, launch Steam with
-  `VK_DRIVER_FILES=/usr/share/vulkan/icd.d/radeon_icd.json` (or set it in the
-  SteamVR launch options).
-- **Session type.** Direct-mode display acquisition has been validated under
-  **X11**. **Wayland** is not yet verified: DRM leasing on Wayland (via
-  `wp_drm_lease_device_v1`, supported by KWin and Mutter) is the intended path,
-  but it has not been tested together with the multi-GPU workaround above.
+  SteamVR's Vulkan at the GPU that drives the headset — see
+  [Running on Wayland](#running-on-wayland) (the same `VK_DRIVER_FILES` applies on
+  X11).
+- **Session type.** Direct mode is validated on both **X11** and **Wayland**
+  (KDE Plasma 6 / KWin). Wayland needs both settings in
+  [Running on Wayland](#running-on-wayland); X11 needs only the GPU force.
 - **FOV / distortion.** These are placeholders, so the image is geometrically
   approximate and has no lens correction yet.
 - **Spatial calibration.** Floor height and forward direction come from SteamVR's
