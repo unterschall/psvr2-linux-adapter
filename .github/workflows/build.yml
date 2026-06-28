@@ -30,7 +30,7 @@ jobs:
             libdrm vulkan-icd-loader vulkan-headers \
             wayland wayland-protocols
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Build libpsvr2
         run: make -C userspace/lib
