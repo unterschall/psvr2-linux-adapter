@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: GPL-2.0
+#
+# Build sanity check: on every push / PR, build all four components from a clean
+# checkout in a base Arch Linux container with only the documented requirements
+# installed. This is a compile gate (it does not load the module or run hardware),
+# meant to catch broken builds before they land. Arch is used because the project
+# targets it and its kernel headers track close to the dev kernel.
+name: build
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build (Arch container)
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      # git is needed for actions/checkout to run inside the container; the rest
+      # are the build requirements. Installed before checkout (no repo needed).
+      - name: Install build requirements
+        run: |
+          pacman -Syu --noconfirm --needed \
+            git base-devel cmake pkgconf linux-headers \
+            libdrm vulkan-icd-loader vulkan-headers \
+            wayland wayland-protocols
+
+      - uses: actions/checkout@v4
+
+      - name: Build libpsvr2
+        run: make -C userspace/lib
+
+      - name: Build kernel module
+        run: |
+          # No running kernel in a container; build against the installed headers.
+          KDIR=$(ls -d /usr/lib/modules/*/build | head -1)
+          echo "Building psvr2.ko against $KDIR"
+          make -C kernel KDIR="$KDIR"
+
+      - name: Build userspace tools
+        run: |
+          make -C userspace/tools all
+          # Diagnostic tools (libdrm / wayland / vulkan) are separate targets.
+          make -C userspace/tools \
+            psvr2-kms-modeset psvr2-pose-guide vk-acquire-drm-display
+
+      - name: Build SteamVR driver
+        run: |
+          cmake -S steamvr/driver_psvr2 -B steamvr/driver_psvr2/build
+          cmake --build steamvr/driver_psvr2/build
