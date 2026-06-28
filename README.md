@@ -1,5 +1,7 @@
 # PSVR2 for Linux
 
+[![build](https://github.com/unterschall/psvr2-linux-adapter/actions/workflows/build.yml/badge.svg)](https://github.com/unterschall/psvr2-linux-adapter/actions/workflows/build.yml)
+
 An open project to bring the Sony **PlayStation VR2** to Linux: a kernel module
 that exposes the headset's sensors and cameras through standard Linux subsystems,
 a small userspace library over those device nodes, and a **SteamVR driver** that
