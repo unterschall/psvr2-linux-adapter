@@ -180,8 +180,8 @@ static void psvr2_slam_process(struct psvr2_slam *sl, int len)
 	struct psvr2_pose_sample sample;
 	unsigned long flags;
 
-	if (len < PSVR2_SLAM_RECORD_SIZE)
-		return;		/* not a full record */
+	if (len < PSVR2_SLAM_RECORD_SIZE || len > (int)sl->buf_size)
+		return;		/* not a full record, or beyond transfer buffer */
 
 	/*
 	 * Parse by offset; do NOT gate on the record's leading magic. The
